@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+	    <file>resources/light.qss</file>
+		<file>resources/dark.qss</file>
+		<file>resources/calculator.png</file>
+    </qresource>
+</RCC>

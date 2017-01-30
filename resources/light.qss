@@ -1,0 +1,43 @@
+QMainWindow {
+    background: #EFEFEF;
+}
+
+QLineEdit {
+    font-size: 28px;
+    color: black;
+    border: 0px solid;
+    border-radius: 0;
+    background-color: #EFEFEF;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+#TextButton {
+    background: #FFFFFF;
+    border: 1px solid #EDEDED;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 400;
+}
+#TextButton:hover {
+    background: #D8D8D8;
+}
+#TextButton:pressed {
+    background: #ADADAD;
+}
+
+#TextButtonIs {
+    border: 1px solid #2CA7F8;
+    background: #2CA7F8;
+    color: #FFFFFF;
+}
+#TextButtonIs:hover {
+    background: #42B4FF;
+    color: #FFFFFF;
+}
+
+#TextButtonIs:pressed {
+    background: #0092F2;
+    color: #FFFFFF;
+}
