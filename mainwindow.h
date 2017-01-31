@@ -24,6 +24,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 
 class MainWindow : public QMainWindow
 {
@@ -35,11 +36,20 @@ public:
     void on_num_clicked(QString text);
     void on_symbol_clicked(QString text);
 
+    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
+
 private:
-    bool SymbolState = false;
-    bool PointState = true; //cannot enter point
-    bool PointState2 = false;
-    bool NumState = true; //continue
+    int     m_GlowRadius;
+    int     m_Radius;
+    QPoint  m_LastMousePos;
+    bool    m_MousePressed;
+
+    bool PointContinue = true;
+    bool NumContinue = true;
+    bool SymbolContinue = true;
+
     Algorithm *algorithm;
 
     QWidget *widget = new QWidget(this);
@@ -85,7 +95,6 @@ private slots:
     void on_btnMult_clicked();
     void on_btnDiv_clicked();
     void on_btnIs_clicked();
-    void on_point_clicked();
 };
 
 #endif // MAINWINDOW_H

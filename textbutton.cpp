@@ -22,5 +22,5 @@ TextButton::TextButton(QString set_text)
     this->setText(set_text);
     this->setObjectName("TextButton");
     this->setFixedSize(70, 55);
-    this->setStyleSheet("outline: none;");
+    //this->setStyleSheet("outline: none;");
 }

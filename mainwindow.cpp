@@ -16,12 +16,26 @@
 */
 
 #include "mainwindow.h"
-#include <QDebug>
+#include "titlebar.h"
+#include <QMouseEvent>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    result->setFocusPolicy(Qt::NoFocus);
+    TitleBar *title = new TitleBar;
+    title->setFixedHeight(36);
+
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+    this->setFocusPolicy(Qt::NoFocus);
+    this->setMenuWidget(title);
+
+    connect(title, SIGNAL(minimised()),
+                this, SLOT(showMinimized()));
+    connect(title, SIGNAL(closed()),
+                this, SLOT(close()));
+
+    result->setEnabled(false);
 
     initUI();
 
@@ -47,10 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::initUI()
 {
-    btnIs->setFocus();
-    btnIs->setShortcut(QKeySequence::InsertParagraphSeparator);
-
-    label->setMargin(10);
     label->setAlignment(Qt::AlignRight);
     result->setAlignment(Qt::AlignRight);
 
@@ -76,82 +86,16 @@ void MainWindow::initUI()
     gridlayout->addWidget(btnIs, 5, 3, 2, 2);
 
     gridlayout->setMargin(0);
-    gridlayout->setSpacing(2);
+    gridlayout->setSpacing(0);
 
     btn0->setFixedSize(70*2 ,55);
     btnIs->setFixedSize(70, 55*2);
 
     btnIs->setObjectName("TextButtonIs");
-    btnClear->setStyleSheet("color: #2CA7F8; outline: none;");
+    btnClear->setStyleSheet("color: #2CA7F8;");
 
     widget->setLayout(gridlayout);
     this->setCentralWidget(widget);
-}
-
-void MainWindow::on_point_clicked()
-{
-    if (PointState == true) {
-        if (NumState == false) {
-            label->clear();
-            result->clear();
-            result->insert("0");
-        }
-        if (result->text() == "") {
-            result->insert("0");
-        }
-        if (PointState2 == true) {
-            result->insert("0");
-        }
-
-        result->insert(".");
-        PointState = false;
-        NumState = true;
-        SymbolState = false;
-    }else {
-        if (NumState == false) {
-            label->clear();
-            result->clear();
-            result->insert("0.");
-        }
-    }
-}
-
-void MainWindow::on_num_clicked(QString text)
-{
-    PointState2 = false;
-
-    if (NumState == false) {
-        label->clear();
-        result->clear();
-        result->insert(text);
-    }else {
-        result->insert(text);
-    }
-
-    NumState = true;
-    SymbolState = true;
-}
-
-void MainWindow::on_symbol_clicked(QString text)
-{
-    NumState = true;
-    PointState = true;
-    PointState2 = true;
-
-    if (SymbolState == true) {
-        result->insert(text);
-        SymbolState = false;
-    }else {
-        if (result->text() == "") {
-            if (text == "-") {
-                result->insert("-");
-            }else {
-                result->insert("0" + text);
-            }
-        }
-    }
-
-    
 }
 
 void MainWindow::on_btn0_clicked()
@@ -204,9 +148,79 @@ void MainWindow::on_btn9_clicked()
     on_num_clicked("9");
 }
 
+void MainWindow::on_num_clicked(QString text)
+{
+    if (NumContinue == false) {
+        label->clear();
+        result->clear();
+        result->insert(text);
+        PointContinue = true;
+    }else {
+        result->insert(text);
+    }
+
+    NumContinue = true;
+    SymbolContinue = true;
+}
+
+void MainWindow::on_symbol_clicked(QString text)
+{
+    QString get = result->text().replace("×", "*").replace("÷", "/");
+    QString::const_iterator i = get.end();
+    i--;
+
+    if (*i == '+' || *i == '-' || *i == '*' || *i == '/') {
+        result->backspace();
+        result->insert(text);
+    }
+
+    if (SymbolContinue == false)
+        return;
+
+    if (result->text() == "") {
+        result->insert("0");
+    }
+
+    result->insert(text);
+    NumContinue = true;
+    PointContinue = true;
+    SymbolContinue = false;
+}
+
 void MainWindow::on_btnPoint_clicked()
 {
-    on_point_clicked();
+    QString get = result->text().replace("×", "*").replace("÷", "/");
+    QString::const_iterator i = get.end();
+    i--;
+
+    if (*i == '+' || *i == '-' || *i == '*' || *i == '/') {
+        result->insert("0");
+    }
+
+    if (result->text() == "") {
+        result->insert("0.");
+        PointContinue = false;
+    }
+
+    if (*i == '.') {
+
+    }
+
+    if (PointContinue == true) {
+        result->insert(".");
+        PointContinue = false;
+    }
+
+    if (NumContinue == false) {
+        label->clear();
+        result->clear();
+        result->insert("0.");
+        NumContinue = true;
+        SymbolContinue = false;
+    }
+
+    PointContinue = false;
+    NumContinue = true;
 }
 
 void MainWindow::on_btnPlus_clicked()
@@ -216,6 +230,10 @@ void MainWindow::on_btnPlus_clicked()
 
 void MainWindow::on_btnMinus_clicked()
 {
+    if (result->text() == "") {
+        on_symbol_clicked("-");
+        return;
+    }
     on_symbol_clicked("-");
 }
 
@@ -234,45 +252,44 @@ void MainWindow::on_btnClear_clicked()
     result->clear();
     label->clear();
 
-    SymbolState = false;
-    NumState = true;
-    PointState = true;
-    PointState2 = false;
+    PointContinue = true;
+    NumContinue = true;
+    SymbolContinue = true;
 }
 
 void MainWindow::on_btnBack_clicked()
 {
     if (result->text() == "") return;
 
-    QString get = result->text().replace("×", "*").replace("÷", "/");
-    QString::const_iterator i = get.end();
+    QString text = result->text().replace("×", "*").replace("÷", "/");
+    QString::const_iterator i = text.end();
     i--;
 
-    if (*i == '0' || *i == '1' || *i == '2' || *i == '3' || *i == '4' ||
-        *i == '5' || *i == '6' || *i == '7' || *i == '8' || *i == '9') {
-        if (*i == '+' || *i == '-' || *i == '*' || *i == '/') {
-            SymbolState = false;
-        }
+    if (*i == '0' || *i == '1' || *i == '2' || *i == '3' ||
+        *i == '4' || *i == '5' || *i == '6' || *i == '7' ||
+        *i == '8' || *i == '9') {
         result->backspace();
-        NumState = true;
+        NumContinue = true;
     }
-    if (*i == '.') {
+    if (*i == '.'){
         result->backspace();
-        PointState = true;
-        PointState2 = false;
+        PointContinue = true;
     }
     if (*i == '+' || *i == '-' || *i == '*' || *i == '/') {
         result->backspace();
-        SymbolState = true;
+        SymbolContinue = true;
+        PointContinue = true;
     }
 
     i--;
     if (*i == '+' || *i == '-' || *i == '*' || *i == '/') {
-        SymbolState = false;
+        SymbolContinue = false;
     }
     if (*i == '.') {
-        SymbolState = false;
+        SymbolContinue = false;
     }
+
+    NumContinue = true;
 }
 
 void MainWindow::on_btnIs_clicked()
@@ -290,6 +307,28 @@ void MainWindow::on_btnIs_clicked()
     result->setText(data);
     label->setToolTip(label->text());
 
-    NumState = false;  //input agin
+    NumContinue = false;  //input agin
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    QRect rect = this->rect().marginsRemoved(QMargins(m_GlowRadius, m_GlowRadius, m_GlowRadius, m_GlowRadius));
+    if (rect.contains(event->pos())) {
+        if(event->button() == Qt::LeftButton) {
+            m_MousePressed = true;
+            m_LastMousePos = event->globalPos() - this->pos();
+        }
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+    if(m_MousePressed) {
+        move(event->globalPos() - m_LastMousePos);
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+    m_MousePressed = false;
+    event->accept();
 }
 

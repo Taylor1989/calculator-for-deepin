@@ -3,5 +3,23 @@
 	    <file>resources/light.qss</file>
 		<file>resources/dark.qss</file>
 		<file>resources/calculator.png</file>
+		<file>resources/dark/window_close_hover.png</file>
+		<file>resources/dark/window_close_normal.png</file>
+		<file>resources/dark/window_close_press.png</file>
+		<file>resources/dark/window_min_hover.png</file>
+		<file>resources/dark/window_min_normal.png</file>
+		<file>resources/dark/window_min_press.png</file>
+		<file>resources/dark/window_option_hover.png</file>
+		<file>resources/dark/window_option_normal.png</file>
+		<file>resources/dark/window_option_press.png</file>
+		<file>resources/light/window_close_hover.png</file>
+		<file>resources/light/window_close_normal.png</file>
+		<file>resources/light/window_close_press.png</file>
+		<file>resources/light/window_min_hover.png</file>
+		<file>resources/light/window_min_normal.png</file>
+		<file>resources/light/window_min_press.png</file>
+		<file>resources/light/window_option_hover.png</file>
+		<file>resources/light/window_option_normal.png</file>
+		<file>resources/light/window_option_press.png</file>
     </qresource>
 </RCC>

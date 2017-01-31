@@ -10,11 +10,13 @@ CONFIG += link_pkgconfig c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     textbutton.cpp \
-    algorithm.cpp   
+    algorithm.cpp \   
+    titlebar.cpp
 
 HEADERS  += mainwindow.h \
     textbutton.h \
-    algorithm.h   
+    algorithm.h \   
+    titlebar.h
 
 RESOURCES += \
     resources.qrc

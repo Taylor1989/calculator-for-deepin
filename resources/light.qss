@@ -2,6 +2,11 @@ QMainWindow {
     background: #EFEFEF;
 }
 
+QLabel {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-right: 8px;
+}
 QLineEdit {
     font-size: 28px;
     color: black;
@@ -41,3 +46,35 @@ QLineEdit {
     background: #0092F2;
     color: #FFFFFF;
 }
+
+
+QPushButton#MinimizeButton{
+    border-image: url(":/resources/light/window_min_normal.png")
+}
+QPushButton#MinimizeButton:hover{
+    border-image: url(":/resources/light/window_min_hover.png")
+}
+QPushButton#MinimizeButton:pressed{
+    border-image: url(":/resources/light/window_min_press.png")
+}
+
+QPushButton#CloseButton{
+    border-image: url(":/resources/light/window_close_normal.png")
+}
+QPushButton#CloseButton:hover{
+    border-image: url(":/resources/light/window_close_hover.png")
+}
+QPushButton#CloseButton:pressed{
+    border-image: url(":/resources/light/window_close_press.png")
+}
+
+QPushButton#MenuButton{
+    border-image: url(":/resources/light/window_option_normal.png")
+}
+QPushButton#MenuButton:hover{
+    border-image: url(":/resources/light/window_option_hover.png")
+}
+QPushButton#MenuButton:pressed{
+    border-image: url(":/resources/light/window_option_press.png")
+}
+
