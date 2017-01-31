@@ -10,16 +10,14 @@ TitleBar::TitleBar(QWidget *parent)
     closeButton->setFixedSize(27, 23);
     closeButton->setAttribute(Qt::WA_NoMousePropagation);
     closeButton->setFocusPolicy(Qt::NoFocus);
-    connect(closeButton, SIGNAL(clicked(bool)),
-                this, SIGNAL(closed()));
+    connect(closeButton, SIGNAL(clicked()), this, SIGNAL(on_closed()));
 
     miniButton = new QPushButton(this);
     miniButton->setObjectName("MinimizeButton");
     miniButton->setFixedSize(27, 23);
     miniButton->setAttribute(Qt::WA_NoMousePropagation);
     miniButton->setFocusPolicy(Qt::NoFocus);
-    connect(miniButton, SIGNAL(clicked(bool)),
-                this,  SIGNAL(minimised()));
+    connect(miniButton, SIGNAL(clicked()), this, SIGNAL(on_minimised()));
 
     menuButton = new QPushButton(this);
     menuButton->setObjectName("MenuButton");

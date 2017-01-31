@@ -27,13 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
     title->setFixedHeight(36);
 
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+
     this->setFocusPolicy(Qt::NoFocus);
     this->setMenuWidget(title);
 
-    connect(title, SIGNAL(minimised()),
-                this, SLOT(showMinimized()));
-    connect(title, SIGNAL(closed()),
-                this, SLOT(close()));
+    connect(title, SIGNAL(on_minimised()), this, SLOT(showMinimized()));
+    connect(title, SIGNAL(on_closed()), this, SLOT(close()));
+    connect(title, SIGNAL(on_closed()), this, SIGNAL(closed()));
 
     result->setEnabled(false);
 

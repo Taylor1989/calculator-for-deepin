@@ -95,6 +95,10 @@ private slots:
     void on_btnMult_clicked();
     void on_btnDiv_clicked();
     void on_btnIs_clicked();
+
+signals:
+    void closed();
+
 };
 
 #endif // MAINWINDOW_H

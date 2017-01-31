@@ -23,8 +23,8 @@ private:
     QPushButton *closeButton;
 
 signals:
-    void minimised();
-    void closed();
+    void on_minimised();
+    void on_closed();
 };
 
 #endif // TITLEBAR_H

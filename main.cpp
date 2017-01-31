@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     a.setStyleSheet(GetStyleSheetContent());
 
     MainWindow w;
-    w.setFixedSize(280, 400);
+    w.resize(280, 400);
     w.setWindowTitle("calculator");
     w.move ((QApplication::desktop()->width() - w.width())/2,
             (QApplication::desktop()->height() - w.height())/2);
