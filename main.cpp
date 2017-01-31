@@ -19,13 +19,20 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFile>
+#include <QDebug>
 
 QString GetStyleSheetContent() {
-    QFile file(":/resources/light.qss");
+    QFile theme_config(":/resources/theme.conf");
+    theme_config.open(QFile::ReadOnly);
+
+    QString data = QString(theme_config.readAll()).remove("\n");
+
+    QFile file(":/resources/" + data);
     bool result = file.open(QFile::ReadOnly);
     if (result) {
         QString content(file.readAll());
         file.close();
+        theme_config.close();
         return content;
     } else {
         return "";
@@ -34,12 +41,14 @@ QString GetStyleSheetContent() {
 
 int main(int argc, char *argv[])
 {
+
+
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/resources/calculator.png"));
     a.setStyleSheet(GetStyleSheetContent());
 
     MainWindow w;
-    w.resize(280, 400);
+    w.resize(280, 410);
     w.setWindowTitle("calculator");
     w.move ((QApplication::desktop()->width() - w.width())/2,
             (QApplication::desktop()->height() - w.height())/2);

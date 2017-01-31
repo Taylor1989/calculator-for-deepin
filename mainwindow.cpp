@@ -18,26 +18,24 @@
 #include "mainwindow.h"
 #include "titlebar.h"
 #include <QMouseEvent>
-#include <QPainter>
+#include <QDebug>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    initUI();
+
     TitleBar *title = new TitleBar;
     title->setFixedHeight(36);
-
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
-
     this->setFocusPolicy(Qt::NoFocus);
     this->setMenuWidget(title);
 
     connect(title, SIGNAL(on_minimised()), this, SLOT(showMinimized()));
     connect(title, SIGNAL(on_closed()), this, SLOT(close()));
     connect(title, SIGNAL(on_closed()), this, SIGNAL(closed()));
-
-    result->setEnabled(false);
-
-    initUI();
+    connect(title, SIGNAL(on_history()), this, SLOT(on_showhistory()));
 
     connect(btn0, SIGNAL(clicked()), this, SLOT(on_btn0_clicked()));
     connect(btn1, SIGNAL(clicked()), this, SLOT(on_btn1_clicked()));
@@ -59,8 +57,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(btnIs, SIGNAL(clicked()), this, SLOT(on_btnIs_clicked()));
 }
 
+void MainWindow::on_showhistory()
+{
+    historydialog->show();
+}
+
 void MainWindow::initUI()
 {
+    result->setEnabled(false);
     label->setAlignment(Qt::AlignRight);
     result->setAlignment(Qt::AlignRight);
 
@@ -92,7 +96,7 @@ void MainWindow::initUI()
     btnIs->setFixedSize(70, 55*2);
 
     btnIs->setObjectName("TextButtonIs");
-    btnClear->setStyleSheet("color: #2CA7F8;");
+    btnClear->setStyleSheet("color: #2CA7F8; outline: none;");
 
     widget->setLayout(gridlayout);
     this->setCentralWidget(widget);
@@ -306,6 +310,7 @@ void MainWindow::on_btnIs_clicked()
 
     result->setText(data);
     label->setToolTip(label->text());
+    historydialog->text->append(label->text() + "=" + result->text());
 
     NumContinue = false;  //input agin
 }

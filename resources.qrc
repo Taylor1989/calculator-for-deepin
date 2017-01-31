@@ -21,5 +21,6 @@
 		<file>resources/light/window_option_hover.png</file>
 		<file>resources/light/window_option_normal.png</file>
 		<file>resources/light/window_option_press.png</file>
+		<file>resources/theme.conf</file>
     </qresource>
 </RCC>

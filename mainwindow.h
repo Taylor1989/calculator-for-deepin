@@ -20,6 +20,7 @@
 
 #include "algorithm.h"
 #include "textbutton.h"
+#include "historydialog.h"
 #include <QMainWindow>
 #include <QLayout>
 #include <QLabel>
@@ -39,6 +40,9 @@ public:
     virtual void mousePressEvent(QMouseEvent *);
     virtual void mouseReleaseEvent(QMouseEvent *);
     virtual void mouseMoveEvent(QMouseEvent *);
+
+    HistoryDialog *historydialog = new HistoryDialog();
+
 
 private:
     int     m_GlowRadius;
@@ -95,9 +99,11 @@ private slots:
     void on_btnMult_clicked();
     void on_btnDiv_clicked();
     void on_btnIs_clicked();
+    void on_showhistory();
 
 signals:
     void closed();
+    void on_history();
 
 };
 

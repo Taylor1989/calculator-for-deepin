@@ -11,12 +11,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     textbutton.cpp \
     algorithm.cpp \   
-    titlebar.cpp
+    titlebar.cpp \
+    historydialog.cpp
 
 HEADERS  += mainwindow.h \
     textbutton.h \
     algorithm.h \   
-    titlebar.h
+    titlebar.h \
+    historydialog.h
 
 RESOURCES += \
     resources.qrc
